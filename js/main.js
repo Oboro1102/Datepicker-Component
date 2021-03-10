@@ -91,15 +91,15 @@ const datepicker = new Vue({
                     this.view = '2';
                     break;
 
-                default:
+                default: // do nothing
                     break;
             }
         },
-        adjustYear(fix) {
-            this.calendar.year += fix;
+        adjustYear(value) {
+            this.calendar.year += value;
         },
-        adjustMonth(fix) {
-            let month = this.calendar.month + fix;
+        adjustMonth(value) {
+            let month = this.calendar.month + value;
             if (month > 12) {
                 this.adjustYear(1);
                 this.calendar.month = 1;
