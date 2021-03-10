@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Datepicker Component" />
+    <meta name="author" content="ツキノリュウ" />
+    <title>Datepicker Component</title>
+    <link href="css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href='https://css.gg/calendar-two.css' rel='stylesheet'>
+    <link href='https://css.gg/calendar-today.css' rel='stylesheet'>
+    <link href='https://css.gg/chevron-up.css' rel='stylesheet'>
+    <link href='https://css.gg/chevron-down.css' rel='stylesheet'>
+    <link href='https://css.gg/spinner-alt.css' rel='stylesheet'>
+    <link href="css/main.css" rel="stylesheet" />
+</head>
+
+<body>
+    <main class="content">
+        <h1 class="content__title">Datepicker Component</h1>
+        <section class="datepicker" v-cloak>
+            <div class="datepicker__control">
+                <h2 class="datepicker__control__time">{{ calendar.year
+                    }}&nbsp;&nbsp;/&nbsp;&nbsp;{{
+                    calendar.month }}
+                    <button type="button" @click="changePicker"><i class="gg-calendar-two"></i></button>
+                </h2>
+                <div class="datepicker__control__button" v-if="view === '0'">
+                    <button type="button" @click="adjustMonth(-1)"><i class="gg-chevron-up"></i></button>
+                    <button type="button" @click="setToday"><i class="gg-calendar-today"></i></button>
+                    <button type="button" @click="adjustMonth(1)"><i class="gg-chevron-down"></i></button>
+                </div>
+                <div style="margin-left: auto;" v-if="view === '1'">Please select month.</div>
+                <div class="datepicker__control__button" v-if="view === '2'">
+                    <div style="margin-left: auto;">Please select year.</div>
+                    <button type="button" @click="adjustYear(-10)"><i class="gg-chevron-up"></i></button>
+                    <button type="button" @click="adjustYear(10)"><i class="gg-chevron-down"></i></button>
+                </div>
+            </div>
+            <transition name="slide" mode="out-in" appear>
+                <div v-if="view === '1'" key="month">
+                    <div class="datepicker__row">
+                        <div class="datepicker__column datepicker__column--month" v-for="(item,index) in month"
+                            :key="index"
+                            :class="{'datepicker__column--selected datepicker__column--selected--month': index + 1 === selectedDate.month && selectedDate.year === calendar.year}">
+                            <span @click="selectMonth(index + 1)">{{ item }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="view === '2'" key="year">
+                    <div class="datepicker__row">
+                        <div class="datepicker__column datepicker__column--month" v-for="(item,index) in yearPickPool"
+                            :key="index"
+                            :class="{'datepicker__column--selected datepicker__column--selected--month': item === selectedDate.year}">
+                            <span @click="selectYear(item)">{{ item }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="view === '0'" key="calendar">
+                    <div class="datepicker__row datepicker__row__day">
+                        <span v-for="(day, index) in days" :key="index">{{ day }}</span>
+                    </div>
+                    <div class="datepicker__row" v-for="week in 6" :key="week">
+                        <div class="datepicker__column" v-for="date in 7" :key="date" :class="{
+                            'datepicker__column--today': checkToday(calendarMonthDate[(week - 1) * 7 + date - 1]),
+                            'datepicker__column--otherMonth': checkToday(calendarMonthDate[(week - 1) * 7 + date - 1], true, calendar.month),
+                            'datepicker__column--selected': checkSelectedDate(calendarMonthDate[(week - 1) * 7 + date - 1]) 
+                        }">
+                            <span @click="selectDate(calendarMonthDate[(week - 1) * 7 + date - 1])">{{
+                                calendarMonthDate[(week - 1) * 7 + date - 1].date }}</span>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+            <h3 class="datepicker__selected">You selected
+                <span class="datepicker__selected--highlight">{{ selectedDate.year }} / {{ selectedDate.month }} / {{
+                    selectedDate.date }}
+                    <span v-if="selectedDate.day == 0">Sunday</span>
+                    <span v-else-if="selectedDate.day == 1">Monday</span>
+                    <span v-else-if="selectedDate.day == 2">Tuesday</span>
+                    <span v-else-if="selectedDate.day == 3">Wednesday</span>
+                    <span v-else-if="selectedDate.day == 4">Thursday</span>
+                    <span v-else-if="selectedDate.day == 5">Friday</span>
+                    <span v-else>Saturday</span>
+                </span>.
+            </h3>
+        </section>
+    </main>
+
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Font Awesome -->
+    <script src="js/solid.min.js"></script>
+    <script src="js/fontawesome.min.js"></script>
+    <!-- Vue Component Code  -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
