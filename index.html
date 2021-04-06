@@ -72,7 +72,9 @@
                         <div class="datepicker__column" v-for="date in 7" :key="date" :class="{
                             'datepicker__column--today': checkToday(calendarMonthDate[(week - 1) * 7 + date - 1]),
                             'datepicker__column--otherMonth': checkToday(calendarMonthDate[(week - 1) * 7 + date - 1], true, calendar.month),
-                            'datepicker__column--selected': checkSelectedDate(calendarMonthDate[(week - 1) * 7 + date - 1]) 
+                            'datepicker__column--selected': checkSelectedDate(calendarMonthDate[(week - 1) * 7 + date - 1]),
+                            'datepicker__column--sunday':calendarMonthDate[(week - 1) * 7 + date - 1].day === 0,
+                            'datepicker__column--saturday':calendarMonthDate[(week - 1) * 7 + date - 1].day === 6
                         }">
                             <span @click="selectDate(calendarMonthDate[(week - 1) * 7 + date - 1])">{{
                                 calendarMonthDate[(week - 1) * 7 + date - 1].date }}</span>
